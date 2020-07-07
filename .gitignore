@@ -21,6 +21,6 @@ hs_err_pid*
 /TicTacToe/nbproject/private/
 
 # Netbeans Files
-/TicTacToe/nbproject/
+/nbproject/
 build.xml
 manifest.mf
