@@ -17,6 +17,6 @@
 *.rar
 
 # Netbeans Files
-/TicTacToe/nbproject/
+/TicTacToe/nbproject
 build.xml
 manifest.mf
