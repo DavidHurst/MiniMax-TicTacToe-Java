@@ -20,3 +20,6 @@
 /TicTacToe/nbproject
 build.xml
 manifest.mf
+/TicTacToe/build/
+/TicTacToe/dist/
+/TicTacToe/test
