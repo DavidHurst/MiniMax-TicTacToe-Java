@@ -7,11 +7,10 @@ import java.util.HashMap;
  */
 public class Board {
 
-    private char[][] board;
+    private final char[][] board;
     char winningMark;
     private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
-    private HashMap<String, int[]> availableMoves;
 
     /**
      * Construct the game board.
@@ -19,11 +18,19 @@ public class Board {
     public Board() {
         board = new char[BOARD_WIDTH][BOARD_WIDTH];
         crossTurn = true;
-        availableMoves = new HashMap<>();
         gameOver = false;
         winningMark = ' ';
         initialiseBoard();
     }
+    
+    public Board(char[][] newBoard) {
+        board = newBoard;
+        crossTurn = true;
+        gameOver = false;
+        winningMark = ' ';
+        //initialiseBoard();
+    }
+    
 
     /**
      * Assign all board positions to be empty and add all positions to the
@@ -33,15 +40,13 @@ public class Board {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
                 board[row][col] = ' ';
-                // Coords of moves are mapped to the concatenation of their vals
-                availableMoves.put("" + row + col, new int[]{row, col});
             }
         }
     }
 
     /**
      * Attempt to place a mark on the given coordinate, placed alternating marks
-     * and checks if move has won the game.
+     * and check if move has won the game.
      *
      * @param row row coordinate to try to place mark
      * @param col column coordinate to try place the mark
@@ -53,7 +58,6 @@ public class Board {
             return false;
         } else {
             board[row][col] = crossTurn ? 'X' : 'O';
-            availableMoves.remove("" + row + col);
             checkWin(row, col);
             togglePlayer();
         }
@@ -107,7 +111,7 @@ public class Board {
      * Compares summed value of row/column/diagonal to value required for a win.
      *
      * @param checkSum summed value to check
-     * @return mark that won or blank space if no win found
+     * @return mark that won or blank space if no win calculated
      */
     private char calcWinner(int checkSum) {
         int Xwin = 'X' * BOARD_WIDTH;
@@ -123,7 +127,7 @@ public class Board {
     }
 
     /**
-     * Toggles which player i.e. mark's turn it is.
+     * Toggles which player's turn it is (nought or cross).
      */
     private void togglePlayer() {
         crossTurn = !crossTurn;
@@ -143,10 +147,6 @@ public class Board {
 
     public boolean isCrossTurn() {
         return crossTurn;
-    }
-
-    public HashMap<String, int[]> getAvailableMoves() {
-        return availableMoves;
     }
 
     public char[][] getBoard() {
