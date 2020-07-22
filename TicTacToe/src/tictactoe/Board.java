@@ -1,14 +1,12 @@
 package tictactoe;
 
-import java.util.HashMap;
-
 /**
  * @author DavidHurst
  */
-public class Board {
+public class Board implements Cloneable {
 
     private final char[][] board;
-    char winningMark;
+    private char winningMark;
     private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
 
@@ -22,15 +20,6 @@ public class Board {
         winningMark = ' ';
         initialiseBoard();
     }
-    
-    public Board(char[][] newBoard) {
-        board = newBoard;
-        crossTurn = true;
-        gameOver = false;
-        winningMark = ' ';
-        //initialiseBoard();
-    }
-    
 
     /**
      * Assign all board positions to be empty and add all positions to the
@@ -56,11 +45,10 @@ public class Board {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
                 || board[row][col] != ' ' || gameOver) {
             return false;
-        } else {
-            board[row][col] = crossTurn ? 'X' : 'O';
-            checkWin(row, col);
-            togglePlayer();
         }
+        board[row][col] = crossTurn ? 'X' : 'O';
+        checkWin(row, col);
+        togglePlayer();
         return true;
     }
 
@@ -79,6 +67,7 @@ public class Board {
         }
         if (calcWinner(checkSum) != ' ') {
             winningMark = calcWinner(checkSum);
+            System.out.println(winningMark + " wins on row " + row);
             return;
         }
 
@@ -89,6 +78,7 @@ public class Board {
         }
         if (calcWinner(checkSum) != ' ') {
             winningMark = calcWinner(checkSum);
+            System.out.println(winningMark + " wins on column " + col);
             return;
         }
 
@@ -104,7 +94,10 @@ public class Board {
                 checkSum += board[index][indexMax - index];
             }
         }
-        winningMark = calcWinner(checkSum);
+        if (calcWinner(checkSum) != ' ') {
+            winningMark = calcWinner(checkSum);
+            System.out.println(winningMark + " wins on the diagonal");
+        }
     }
 
     /**
@@ -162,9 +155,6 @@ public class Board {
     }
 
     public char getWinningMark() {
-        if (!gameOver) {
-            throw new IllegalStateException("Game not over");
-        }
         return winningMark;
     }
 }

@@ -5,19 +5,10 @@ package tictactoe;
  */
 public class MiniMax {
 
-    /**
-     * Utility class so no instantiation required.
-     */
+
     private MiniMax() {
     }
 
-    /**
-     *
-     * @param board
-     * @param depth
-     * @param maximisingPlayer
-     * @return
-     */
     public static int miniMax(Board board, int depth, boolean maximisingPlayer) {
         int boardVal = evaluateBoard(board);
 
@@ -60,7 +51,7 @@ public class MiniMax {
         }
     }
 
-    public static int[] getBestMove(Board board) throws CloneNotSupportedException {
+    public static int[] getBestMove(Board board) {
         int[] bestMove = new int[]{-1, -1};
         int bestValue = Integer.MIN_VALUE;
 
@@ -81,6 +72,15 @@ public class MiniMax {
         return bestMove;
     }
 
+    private static int evaluateBoard(Board board) {
+        if (board.getWinningMark() == 'X') {
+            return 10;
+        } else if (board.getWinningMark() == 'O') {
+            return -10;
+        }
+        return 0;
+    }
+    /*
     private static int evaluateBoard(Board board) {
         int bWidth = board.getBOARD_WIDTH();
         int Xwin = 'X' * bWidth;
@@ -140,4 +140,5 @@ public class MiniMax {
         
         return 0;
     }
+*/
 }
