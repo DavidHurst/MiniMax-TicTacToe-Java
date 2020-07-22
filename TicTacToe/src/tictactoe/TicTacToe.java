@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 /**
  * @author DavidHurst
  */
-public class TicTacToe extends Application implements ActionListener {
+public class TicTacToe extends Application {
 
     static GridPane gameBoard;
     static Board board;
@@ -57,7 +57,7 @@ public class TicTacToe extends Application implements ActionListener {
     }
 
     @Override
-    public void start(Stage primaryStage) throws CloneNotSupportedException, InterruptedException {
+    public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
         root.setCenter(intialiseGame());
         Scene scene = new Scene(root);
@@ -65,7 +65,9 @@ public class TicTacToe extends Application implements ActionListener {
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
         primaryStage.show();
+        // Fix loop below.
 //        while (!board.isGameOver()) {
+//            
 //            if (board.isCrossTurn()) {
 //                playAI();
 //            } 
@@ -88,7 +90,7 @@ public class TicTacToe extends Application implements ActionListener {
         return gameBoard;
     }
 
-    private static void playAI() throws CloneNotSupportedException {
+    private static void playAI() {
         int[] move = MiniMax.getBestMove(board);
         int row = move[0];
         int col = move[1];
@@ -103,8 +105,4 @@ public class TicTacToe extends Application implements ActionListener {
         System.out.println("MiniMax placed mark at " + row + col);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("Action detected");
-    }
 }

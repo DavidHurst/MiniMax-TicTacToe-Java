@@ -5,7 +5,6 @@ package tictactoe;
  */
 public class MiniMax {
 
-
     private MiniMax() {
     }
 
@@ -27,8 +26,7 @@ public class MiniMax {
                 for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
                     if (board.getBoard()[row][col] == ' ') {
                         board.getBoard()[row][col] = 'X';
-                        best = Math.max(best, miniMax(board, depth + 1,
-                                false));
+                        best = Math.max(best, miniMax(board, depth + 1, false));
                         board.getBoard()[row][col] = ' ';
                     }
                 }
@@ -41,8 +39,7 @@ public class MiniMax {
                 for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
                     if (board.getBoard()[row][col] == ' ') {
                         board.getBoard()[row][col] = 'O';
-                        best = Math.min(best, miniMax(board, depth + 1,
-                                true));
+                        best = Math.min(best, miniMax(board, depth + 1, true));
                         board.getBoard()[row][col] = ' ';
                     }
                 }
@@ -80,65 +77,5 @@ public class MiniMax {
         }
         return 0;
     }
-    /*
-    private static int evaluateBoard(Board board) {
-        int bWidth = board.getBOARD_WIDTH();
-        int Xwin = 'X' * bWidth;
-        int Owin = 'O' * bWidth;
-        int checkSum = 0;
-        
-        // Check rows for winner.
-        for (int row = 0; row < bWidth; row++) {
-            for (int col = 0; col < bWidth; col++) {
-                checkSum += board.getBoard()[row][col];
-            }
-            if (checkSum == Xwin) {
-                return 10;
-            } else if (checkSum == Owin) {
-                return -10;
-            }
-            checkSum = 0;
-        }
 
-        // Check columns for winner.
-        checkSum = 0;
-        for (int col = 0; col < bWidth; col++) {
-            for (int row = 0; row < bWidth; row++) {
-                checkSum += board.getBoard()[row][row];
-            }
-            if (checkSum == Xwin) {
-                return 10;
-            } else if (checkSum == Owin) {
-                return -10;
-            }
-            checkSum = 0;
-        }
-
-        // Check diagonals.
-        checkSum = 0;
-        // Top-left to bottom-right diagonal.
-        for (int i = 0; i < bWidth; i++) {
-            checkSum += board.getBoard()[i][i];
-        }
-        if (checkSum == Xwin) {
-            return 10;
-        } else if (checkSum == Owin) {
-            return -10;
-        }
-        
-        checkSum = 0;
-        // Top-right to bottom-left diagonal.
-        int indexMax = bWidth - 1;
-        for (int index = 0; index <= indexMax; index++) {
-            checkSum += board.getBoard()[index][indexMax - index];
-        }
-        if (checkSum == Xwin) {
-            return 10;
-        } else if (checkSum == Owin) {
-            return -10;
-        }
-        
-        return 0;
-    }
-*/
 }

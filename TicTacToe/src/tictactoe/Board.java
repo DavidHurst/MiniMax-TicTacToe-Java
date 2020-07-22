@@ -10,9 +10,6 @@ public class Board implements Cloneable {
     private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
 
-    /**
-     * Construct the game board.
-     */
     public Board() {
         board = new char[BOARD_WIDTH][BOARD_WIDTH];
         crossTurn = true;
@@ -21,10 +18,6 @@ public class Board implements Cloneable {
         initialiseBoard();
     }
 
-    /**
-     * Assign all board positions to be empty and add all positions to the
-     * available moves set.
-     */
     private void initialiseBoard() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
@@ -33,14 +26,6 @@ public class Board implements Cloneable {
         }
     }
 
-    /**
-     * Attempt to place a mark on the given coordinate, placed alternating marks
-     * and check if move has won the game.
-     *
-     * @param row row coordinate to try to place mark
-     * @param col column coordinate to try place the mark
-     * @return true if mark was placed successfully
-     */
     public boolean placeMark(int row, int col) {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
                 || board[row][col] != ' ' || gameOver) {
@@ -52,13 +37,6 @@ public class Board implements Cloneable {
         return true;
     }
 
-    /**
-     * Checks row and column mark was placed in for game win, if no win there,
-     * checks diagonals.
-     *
-     * @param row row coordinate to check
-     * @param col column coordinate to check
-     */
     private void checkWin(int row, int col) {
         int checkSum = 0;
         // Check row for winner.
@@ -100,12 +78,6 @@ public class Board implements Cloneable {
         }
     }
 
-    /**
-     * Compares summed value of row/column/diagonal to value required for a win.
-     *
-     * @param checkSum summed value to check
-     * @return mark that won or blank space if no win calculated
-     */
     private char calcWinner(int checkSum) {
         int Xwin = 'X' * BOARD_WIDTH;
         int Owin = 'O' * BOARD_WIDTH;
@@ -119,9 +91,6 @@ public class Board implements Cloneable {
         return ' ';
     }
 
-    /**
-     * Toggles which player's turn it is (nought or cross).
-     */
     private void togglePlayer() {
         crossTurn = !crossTurn;
     }
