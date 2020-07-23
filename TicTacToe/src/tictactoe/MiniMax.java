@@ -1,5 +1,7 @@
 package tictactoe;
 
+import java.util.Arrays;
+
 /**
  * @author DavidHurst
  */
@@ -50,7 +52,7 @@ public class MiniMax {
 
     public static int[] getBestMove(Board board) {
         int[] bestMove = new int[]{-1, -1};
-        int bestValue = Integer.MIN_VALUE;
+        int bestValue = -1000;
 
         for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
             for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
@@ -66,15 +68,68 @@ public class MiniMax {
                 }
             }
         }
+        System.out.println("Value of the move " + Arrays.toString(bestMove)
+                + " is " + bestValue);
         return bestMove;
     }
 
-    private static int evaluateBoard(Board board) {
-        if (board.getWinningMark() == 'X') {
+    private static int evaluateBoard(Board b) {
+        int checkSum = 0;
+        int bWidth = b.getBOARD_WIDTH();
+        int Xwin = 'X' * bWidth;
+        int Owin = 'O' * bWidth;
+
+        // Check rows for winner.
+        for (int row = 0; row < bWidth; row++) {
+            for (int col = 0; col < bWidth; col++) {
+                checkSum += b.getBoard()[row][col];
+            }
+            if (checkSum == Xwin) {
+                return 10;
+            } else if (checkSum == Owin) {
+                return -10;
+            }
+            checkSum = 0;
+        }
+
+        // Check columns for winner.
+        checkSum = 0;
+        for (int col = 0; col < bWidth; col++) {
+            for (int row = 0; row < bWidth; row++) {
+                checkSum += b.getBoard()[row][col];
+            }
+            if (checkSum == Xwin) {
+                return 10;
+            } else if (checkSum == Owin) {
+                return -10;
+            }
+            checkSum = 0;
+        }
+
+        // Check diagonals for winner.
+        // Top-left to bottom-right diagonal.
+        checkSum = 0;
+        for (int index = 0; index < bWidth; index++) {
+            checkSum += b.getBoard()[index][index];
+        }
+        if (checkSum == Xwin) {
             return 10;
-        } else if (board.getWinningMark() == 'O') {
+        } else if (checkSum == Owin) {
             return -10;
         }
+
+        // Top-right to bottom-left diagonal.
+        checkSum = 0;
+        int indexMax = bWidth - 1;
+        for (int index = 0; index <= indexMax; index++) {
+            checkSum += b.getBoard()[index][indexMax - index];
+        }
+        if (checkSum == Xwin) {
+            return 10;
+        } else if (checkSum == Owin) {
+            return -10;
+        }
+        
         return 0;
     }
 

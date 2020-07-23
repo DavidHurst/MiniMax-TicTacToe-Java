@@ -1,7 +1,5 @@
 package tictactoe;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -76,12 +74,14 @@ public class TicTacToe extends Application {
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
 
-        final long startNanoTime = System.nanoTime();
         gameTimer = new AnimationTimer() {
             @Override
-            public void handle(long currentNanoTime) {
+            public void handle(long now) {
                 if (board.isGameOver()) {
                     this.stop();
+                    if (board.getWinningMark() == ' ') {
+                        System.out.println("Tie!");
+                    }
                 } else {
                     if (board.isCrossTurn()) {
                         playAI();

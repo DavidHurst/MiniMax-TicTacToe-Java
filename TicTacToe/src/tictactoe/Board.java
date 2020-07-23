@@ -17,6 +17,13 @@ public class Board implements Cloneable {
         winningMark = ' ';
         initialiseBoard();
     }
+    
+    public Board(char[][] b) {
+        board = b;
+        crossTurn = true;
+        gameOver = false;
+        winningMark = ' ';
+    }
 
     private void initialiseBoard() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
@@ -90,6 +97,17 @@ public class Board implements Cloneable {
         }
         return ' ';
     }
+
+//    private boolean areMovesLeft() {
+//        for (int row = 0; row < BOARD_WIDTH; row++) {
+//            for (int col = 0; col < BOARD_WIDTH; col++) {
+//                if (board[row][col] == ' ') {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     private void togglePlayer() {
         crossTurn = !crossTurn;
