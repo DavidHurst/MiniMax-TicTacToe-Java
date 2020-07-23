@@ -1,7 +1,8 @@
 package tictactoe;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +20,8 @@ public class TicTacToe extends Application {
 
     static GridPane gameBoard;
     static Board board;
+    Button newGame;
+    AnimationTimer gameTimer;
 
     public final static class Tile extends Button {
 
@@ -59,23 +62,39 @@ public class TicTacToe extends Application {
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
+        newGame = new Button("New Game");
+
         root.setCenter(intialiseGame());
+        root.setTop(newGame);
+
+        newGame.setOnMouseClicked(e -> {
+            root.setCenter(intialiseGame());
+            gameTimer.start();
+        });
+
         Scene scene = new Scene(root);
-        
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
+
+        final long startNanoTime = System.nanoTime();
+        gameTimer = new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (board.isGameOver()) {
+                    this.stop();
+                } else {
+                    if (board.isCrossTurn()) {
+                        playAI();
+                    }
+                }
+            }
+        };
+        gameTimer.start();
+
         primaryStage.show();
-        // Fix loop below.
-//        while (!board.isGameOver()) {
-//            
-//            if (board.isCrossTurn()) {
-//                playAI();
-//            } 
-//        }
-        playAI();
     }
 
-    private GridPane intialiseGame() {
+    private static GridPane intialiseGame() {
         gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         gameBoard.setDisable(false);
