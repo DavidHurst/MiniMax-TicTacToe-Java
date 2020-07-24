@@ -1,7 +1,5 @@
 package tictactoe;
 
-import java.util.Arrays;
-
 /**
  * @author DavidHurst
  */
@@ -11,19 +9,19 @@ public class MiniMax {
     }
 
     public static int miniMax(Board board, int depth, boolean maximisingPlayer) {
-        int boardVal = evaluateBoard(board);
+        int score = evaluateBoard(board);
 
-        // Terminating node reached.
-        if (Math.abs(boardVal) == 10) {
-            return boardVal;
+        // Terminating node reached (win/lose board configuration or no moves).
+        if (Math.abs(score) == 10) {
+            return score;
         }
-        if (board.isGameOver()) {
+        if (!board.areMovesLeft() || board.isGameOver()) {
             return 0;
         }
 
         // Maximising player, find the maximum attainable value.
         if (maximisingPlayer) {
-            int best = Integer.MIN_VALUE;
+            int best = -1000;
             for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
                 for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
                     if (board.getBoard()[row][col] == ' ') {
@@ -36,7 +34,7 @@ public class MiniMax {
             return best;
             // Minimising player, find the minimum attainable value;
         } else {
-            int best = Integer.MAX_VALUE;
+            int best = 1000;
             for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
                 for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
                     if (board.getBoard()[row][col] == ' ') {
@@ -68,8 +66,6 @@ public class MiniMax {
                 }
             }
         }
-        System.out.println("Value of the move " + Arrays.toString(bestMove)
-                + " is " + bestValue);
         return bestMove;
     }
 

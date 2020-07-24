@@ -6,6 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
@@ -16,10 +19,13 @@ import javafx.stage.Stage;
  */
 public class TicTacToe extends Application {
 
-    static GridPane gameBoard;
-    static Board board;
-    Button newGame;
-    AnimationTimer gameTimer;
+    private static GridPane gameBoard;
+    private static Board board;
+    private AnimationTimer gameTimer;
+    private MenuBar menuBar;
+    private Menu gameMenu;
+    private MenuItem newGame;
+    private BorderPane root;
 
     public final static class Tile extends Button {
 
@@ -41,9 +47,9 @@ public class TicTacToe extends Application {
                     this.update();
                 }
             });
-            this.setStyle("-fx-font-size:70");
+            this.setStyle("-fx-font-size:72");
             this.setTextAlignment(TextAlignment.CENTER);
-            this.setPrefSize(200.0, 200.0);
+            this.setMinSize(200.0, 200.0);
             this.setText("" + mark);
         }
 
@@ -59,16 +65,20 @@ public class TicTacToe extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        BorderPane root = new BorderPane();
-        newGame = new Button("New Game");
-
-        root.setCenter(intialiseGame());
-        root.setTop(newGame);
-
-        newGame.setOnMouseClicked(e -> {
+        menuBar = new MenuBar();
+        gameMenu = new Menu("Game");
+        newGame = new MenuItem("New Game");
+        root = new BorderPane();
+        
+        gameMenu.getItems().add(newGame);
+        menuBar.getMenus().add(gameMenu);
+        newGame.setOnAction(e -> {
             root.setCenter(intialiseGame());
             gameTimer.start();
         });
+
+        root.setCenter(intialiseGame());
+        root.setTop(menuBar);
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tic Tac Toe");
@@ -79,9 +89,6 @@ public class TicTacToe extends Application {
             public void handle(long now) {
                 if (board.isGameOver()) {
                     this.stop();
-                    if (board.getWinningMark() == ' ') {
-                        System.out.println("Tie!");
-                    }
                 } else {
                     if (board.isCrossTurn()) {
                         playAI();
@@ -121,7 +128,6 @@ public class TicTacToe extends Application {
                 t.update();
             }
         }
-        System.out.println("MiniMax placed mark at " + row + col);
     }
 
 }
