@@ -7,7 +7,7 @@ public class Board {
 
     private final char[][] board;
     private char winningMark;
-    private final int BOARD_WIDTH = 3;
+    private final int BOARD_WIDTH = 4;
     private boolean crossTurn, gameOver;
 
     public Board() {
@@ -31,7 +31,6 @@ public class Board {
                 || board[row][col] != ' ' || gameOver) {
             return false;
         }
-
         board[row][col] = crossTurn ? 'X' : 'O';
         togglePlayer();
         checkWin(row, col);

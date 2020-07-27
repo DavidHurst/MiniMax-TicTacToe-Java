@@ -25,7 +25,7 @@ public class TicTacToe extends Application {
     private AnimationTimer gameTimer;
     private MenuBar menuBar;
     private Menu gameMenu;
-    private MenuItem newGame;
+    private MenuItem newGameOption;
     private BorderPane root;
 
     public final static class Tile extends Button {
@@ -48,9 +48,9 @@ public class TicTacToe extends Application {
                     this.update();
                 }
             });
-            this.setStyle("-fx-font-size:72");
+            this.setStyle("-fx-font-size:42");
             this.setTextAlignment(TextAlignment.CENTER);
-            this.setMinSize(200.0, 200.0);
+            this.setMinSize(100.0, 100.0);
             this.setText("" + mark);
         }
 
@@ -66,25 +66,49 @@ public class TicTacToe extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        menuBar = new MenuBar();
-        gameMenu = new Menu("Game");
-        newGame = new MenuItem("New Game");
         root = new BorderPane();
-        
-        gameMenu.getItems().add(newGame);
-        menuBar.getMenus().add(gameMenu);
-        newGame.setOnAction(e -> {
-            root.setCenter(intialiseGame());
-            gameTimer.start();
-        });
 
-        root.setCenter(intialiseGame());
-        root.setTop(menuBar);
+        root.setCenter(initialiseGUI());
+        root.setTop(initialiseMenu());
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
 
+        runGameLoop();
+        
+        primaryStage.show();
+    }
+
+    private static GridPane initialiseGUI() {
+        gameBoard = new GridPane();
+        gameBoard.setAlignment(Pos.CENTER);
+        board = new Board();
+        for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
+            for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
+                Tile tile = new Tile(row, col, board.getBoard()[row][col]);
+                GridPane.setConstraints(tile, col, row);
+                gameBoard.getChildren().add(tile);
+            }
+        }
+        return gameBoard;
+    }
+    
+    private MenuBar initialiseMenu() {
+        menuBar = new MenuBar();
+        gameMenu = new Menu("Game");
+        newGameOption = new MenuItem("New Game");
+        
+        gameMenu.getItems().add(newGameOption);
+        menuBar.getMenus().add(gameMenu);
+        newGameOption.setOnAction(e -> {
+            root.setCenter(initialiseGUI());
+            gameTimer.start();
+        });
+        return menuBar;
+    }
+    
+    private void runGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -98,22 +122,6 @@ public class TicTacToe extends Application {
             }
         };
         gameTimer.start();
-
-        primaryStage.show();
-    }
-
-    private static GridPane intialiseGame() {
-        gameBoard = new GridPane();
-        gameBoard.setAlignment(Pos.CENTER);
-        board = new Board();
-        for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
-            for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
-                Tile tile = new Tile(row, col, board.getBoard()[row][col]);
-                GridPane.setConstraints(tile, col, row);
-                gameBoard.getChildren().add(tile);
-            }
-        }
-        return gameBoard;
     }
 
     private static void playAI() {

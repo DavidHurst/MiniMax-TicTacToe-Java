@@ -6,15 +6,17 @@ import Game.Board;
  * @author DavidHurst
  */
 public class MiniMax {
+    
+    private static int MAX_DEPTH = 6;
 
     private MiniMax() {
     }
 
     public static int miniMax(Board board, int depth, boolean maximisingPlayer) {
         int score = evaluateBoard(board);
-
-        // Terminating node reached (win/lose board configuration or no moves).
-        if (Math.abs(score) == 10) {
+        
+        // Terminating node (win/lose board configuration) or max depth reached.
+        if (Math.abs(score) == 10 || depth >= MAX_DEPTH) {
             return score;
         }
         if (!board.areMovesLeft()) {
@@ -53,7 +55,7 @@ public class MiniMax {
     public static int[] getBestMove(Board board) {
         int[] bestMove = new int[]{-1, -1};
         int bestValue = -1000;
-
+        
         for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
             for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
                 if (board.getBoard()[row][col] == ' ') {
