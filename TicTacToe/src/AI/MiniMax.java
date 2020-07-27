@@ -1,4 +1,6 @@
-package tictactoe;
+package AI;
+
+import Game.Board;
 
 /**
  * @author DavidHurst
@@ -15,7 +17,7 @@ public class MiniMax {
         if (Math.abs(score) == 10) {
             return score;
         }
-        if (!board.areMovesLeft() || board.isGameOver()) {
+        if (!board.areMovesLeft()) {
             return 0;
         }
 

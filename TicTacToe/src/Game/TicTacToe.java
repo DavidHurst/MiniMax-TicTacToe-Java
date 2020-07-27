@@ -1,5 +1,6 @@
-package tictactoe;
+package Game;
 
+import AI.MiniMax;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -33,10 +34,10 @@ public class TicTacToe extends Application {
         private final int col;
         private char mark;
 
-        public Tile(int newRow, int newCol, char newMark) {
-            row = newRow;
-            col = newCol;
-            mark = newMark;
+        public Tile(int r, int c, char mrk) {
+            row = r;
+            col = c;
+            mark = mrk;
             initialiseTile();
         }
 
@@ -104,7 +105,6 @@ public class TicTacToe extends Application {
     private static GridPane intialiseGame() {
         gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
-        gameBoard.setDisable(false);
         board = new Board();
         for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
             for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
@@ -126,6 +126,7 @@ public class TicTacToe extends Application {
                     && gameBoard.getColumnIndex(child) == col) {
                 Tile t = (Tile) child;
                 t.update();
+                return;
             }
         }
     }

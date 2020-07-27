@@ -1,9 +1,9 @@
-package tictactoe;
+package Game;
 
 /**
  * @author DavidHurst
  */
-public class Board implements Cloneable {
+public class Board {
 
     private final char[][] board;
     private char winningMark;
@@ -45,7 +45,6 @@ public class Board implements Cloneable {
             checkSum += board[row][c];
         }
         if (calcWinner(checkSum) != ' ') {
-            winningMark = calcWinner(checkSum);
             System.out.println(winningMark + " wins on row " + row);
             return;
         }
@@ -56,31 +55,30 @@ public class Board implements Cloneable {
             checkSum += board[r][col];
         }
         if (calcWinner(checkSum) != ' ') {
-            winningMark = calcWinner(checkSum);
             System.out.println(winningMark + " wins on column " + col);
             return;
         }
 
         // Top-left to bottom-right diagonal.
         checkSum = 0;
-        for (int index = 0; index < BOARD_WIDTH; index++) {
-            checkSum += board[index][index];
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            checkSum += board[i][i];
         }
         if (calcWinner(checkSum) != ' ') {
-            winningMark = calcWinner(checkSum);
-            System.out.println(winningMark + " wins on the diagonal");
+            System.out.println(winningMark + " wins on the top-left to "
+                    + "bottom-right diagonal");
             return;
         }
         
         // Top-right to bottom-left diagonal.
         checkSum = 0;
         int indexMax = BOARD_WIDTH - 1;
-        for (int index = 0; index <= indexMax; index++) {
-            checkSum += board[index][indexMax - index];
+        for (int i = 0; i <= indexMax; i++) {
+            checkSum += board[i][indexMax - i];
         }
         if (calcWinner(checkSum) != ' ') {
-            winningMark = calcWinner(checkSum);
-            System.out.println(winningMark + " wins on the diagonal");
+            System.out.println(winningMark + " wins on the top-right to "
+                    + "bottom-left diagonal.");
             return;
         }
 
@@ -90,17 +88,16 @@ public class Board implements Cloneable {
         }
     }
 
-    // Refactor to winner found, return true if winner found and use return to 
-    // exit checkWin() and return the winningMark. Can maybe return where win 
-    // was for CSS animation.
     private char calcWinner(int checkSum) {
         int Xwin = 'X' * BOARD_WIDTH;
         int Owin = 'O' * BOARD_WIDTH;
         if (checkSum == Xwin) {
             gameOver = true;
+            winningMark = 'X';
             return 'X';
         } else if (checkSum == Owin) {
             gameOver = true;
+            winningMark = 'O';
             return 'O';
         }
         return ' ';
