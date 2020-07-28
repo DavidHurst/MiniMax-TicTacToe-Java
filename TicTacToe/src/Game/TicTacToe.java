@@ -6,7 +6,11 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -48,9 +52,9 @@ public class TicTacToe extends Application {
                     this.update();
                 }
             });
-            this.setStyle("-fx-font-size:42");
+            this.setStyle("-fx-font-size:70");
             this.setTextAlignment(TextAlignment.CENTER);
-            this.setMinSize(100.0, 100.0);
+            this.setMinSize(150.0, 150.0);
             this.setText("" + mark);
         }
 
@@ -68,7 +72,7 @@ public class TicTacToe extends Application {
     public void start(Stage primaryStage) {
         root = new BorderPane();
 
-        root.setCenter(initialiseGUI());
+        root.setCenter(initialiseGameGUI());
         root.setTop(initialiseMenu());
 
         Scene scene = new Scene(root);
@@ -76,13 +80,14 @@ public class TicTacToe extends Application {
         primaryStage.setScene(scene);
 
         runGameLoop();
-        
+
         primaryStage.show();
     }
 
-    private static GridPane initialiseGUI() {
+    private static GridPane initialiseGameGUI() {
         gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
+        
         board = new Board();
         for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
             for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
@@ -93,27 +98,26 @@ public class TicTacToe extends Application {
         }
         return gameBoard;
     }
-    
+
     private MenuBar initialiseMenu() {
         menuBar = new MenuBar();
         gameMenu = new Menu("Game");
         newGameOption = new MenuItem("New Game");
-        
+
         gameMenu.getItems().add(newGameOption);
         menuBar.getMenus().add(gameMenu);
         newGameOption.setOnAction(e -> {
-            root.setCenter(initialiseGUI());
-            gameTimer.start();
+            resetGame();
         });
         return menuBar;
     }
-    
+
     private void runGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (board.isGameOver()) {
-                    this.stop();
+                    endGame();
                 } else {
                     if (board.isCrossTurn()) {
                         playAI();
@@ -139,4 +143,27 @@ public class TicTacToe extends Application {
         }
     }
 
+    private void resetGame() {
+        root.setCenter(initialiseGameGUI());
+        gameTimer.start();
+    }
+
+    private void endGame() {
+        Alert gameOverAlert = new Alert(AlertType.INFORMATION);
+        gameTimer.stop();
+        char winner = board.getWinningMark();
+
+        gameOverAlert.setTitle("Game Over");
+        gameOverAlert.setContentText("Click OK to start a new game.");
+        if (winner == ' ') {
+            gameOverAlert.setHeaderText("Tie!");
+        } else {
+            gameOverAlert.setHeaderText(winner + " wins!");
+        }
+        gameOverAlert.setOnHidden(e -> {
+            gameOverAlert.close();
+            resetGame();
+        });
+        gameOverAlert.show();
+    }
 }

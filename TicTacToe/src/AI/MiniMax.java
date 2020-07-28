@@ -7,7 +7,7 @@ import Game.Board;
  */
 public class MiniMax {
     
-    private static int MAX_DEPTH = 6;
+    private static final int MAX_DEPTH = 6;
 
     private MiniMax() {
     }
@@ -19,7 +19,7 @@ public class MiniMax {
         if (Math.abs(score) == 10 || depth >= MAX_DEPTH) {
             return score;
         }
-        if (!board.areMovesLeft()) {
+        if (!board.movesAvailable()) {
             return 0;
         }
 

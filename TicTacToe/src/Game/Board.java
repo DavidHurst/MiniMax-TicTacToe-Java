@@ -7,7 +7,7 @@ public class Board {
 
     private final char[][] board;
     private char winningMark;
-    private final int BOARD_WIDTH = 4;
+    private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
 
     public Board() {
@@ -81,7 +81,7 @@ public class Board {
             return;
         }
 
-        if (!areMovesLeft()) {
+        if (!movesAvailable()) {
             gameOver = true;
             System.out.println("Tie!");
         }
@@ -102,7 +102,7 @@ public class Board {
         return ' ';
     }
 
-    public boolean areMovesLeft() {
+    public boolean movesAvailable() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
                 if (board[row][col] == ' ') {
