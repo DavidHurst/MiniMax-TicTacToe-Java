@@ -26,8 +26,8 @@ public class MiniMax {
         // Maximising player, find the maximum attainable value.
         if (isMax) {
             int highestVal = Integer.MIN_VALUE;
-            for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
-                for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
+            for (int row = 0; row < board.getWidth(); row++) {
+                for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'X');
                         highestVal = Math.max(highestVal, miniMax(board, 
@@ -40,8 +40,8 @@ public class MiniMax {
             // Minimising player, find the minimum attainable value;
         } else {
             int lowestVal = Integer.MAX_VALUE;
-            for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
-                for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
+            for (int row = 0; row < board.getWidth(); row++) {
+                for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'O');
                         lowestVal = Math.min(lowestVal, miniMax(board, 
@@ -58,8 +58,8 @@ public class MiniMax {
         int[] bestMove = new int[]{-1, -1};
         int bestValue = Integer.MIN_VALUE;
         
-        for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
-            for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
+        for (int row = 0; row < board.getWidth(); row++) {
+            for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
                     board.setMarkAt(row, col, 'X');
                     int moveValue = miniMax(board, 0, false);
@@ -77,7 +77,7 @@ public class MiniMax {
 
     private static int evaluateBoard(Board board) {
         int checkSum = 0;
-        int bWidth = board.getBOARD_WIDTH();
+        int bWidth = board.getWidth();
         int Xwin = 'X' * bWidth;
         int Owin = 'O' * bWidth;
 

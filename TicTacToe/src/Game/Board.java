@@ -145,7 +145,7 @@ public class Board {
         return crossTurn;
     }
 
-    public int getBOARD_WIDTH() {
+    public int getWidth() {
         return BOARD_WIDTH;
     }
 

@@ -87,8 +87,8 @@ public class TicTacToe extends Application {
         gameBoard.setAlignment(Pos.CENTER);
         
         board = new Board();
-        for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
-            for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
+        for (int row = 0; row < board.getWidth(); row++) {
+            for (int col = 0; col < board.getWidth(); col++) {
                 Tile tile = new Tile(row, col, board.getMarkAt(row, col));
                 GridPane.setConstraints(tile, col, row);
                 gameBoard.getChildren().add(tile);
@@ -132,8 +132,8 @@ public class TicTacToe extends Application {
         int col = move[1];
         board.placeMark(row, col);
         for (Node child : gameBoard.getChildren()) {
-            if (gameBoard.getRowIndex(child) == row
-                    && gameBoard.getColumnIndex(child) == col) {
+            if (GridPane.getRowIndex(child) == row
+                    && GridPane.getColumnIndex(child) == col) {
                 Tile t = (Tile) child;
                 t.update();
                 return;
