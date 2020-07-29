@@ -5,13 +5,13 @@ package Game;
  */
 public class Board {
 
-    private final char[][] board;
+    private final Tile[][] board;
     private char winningMark;
     private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
 
     public Board() {
-        board = new char[BOARD_WIDTH][BOARD_WIDTH];
+        board = new Tile[BOARD_WIDTH][BOARD_WIDTH];
         crossTurn = true;
         gameOver = false;
         winningMark = ' ';
@@ -21,17 +21,17 @@ public class Board {
     private void initialiseBoard() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
-                board[row][col] = ' ';
+                board[row][col] = new Tile(' ');
             }
         }
     }
 
     public boolean placeMark(int row, int col) {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
-                || board[row][col] != ' ' || gameOver) {
+                || !board[row][col].isMarked() || gameOver) {
             return false;
         }
-        board[row][col] = crossTurn ? 'X' : 'O';
+        board[row][col].markTile(crossTurn ? 'X' : 'O');
         togglePlayer();
         checkWin(row, col);
         return true;
@@ -41,7 +41,7 @@ public class Board {
         int checkSum = 0;
         // Check row for winner.
         for (int c = 0; c < BOARD_WIDTH; c++) {
-            checkSum += board[row][c];
+            checkSum += board[row][c].getMark();
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on row " + row);
@@ -51,7 +51,7 @@ public class Board {
         // Check column for winner.
         checkSum = 0;
         for (int r = 0; r < BOARD_WIDTH; r++) {
-            checkSum += board[r][col];
+            checkSum += board[r][col].getMark();
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on column " + col);
@@ -61,7 +61,7 @@ public class Board {
         // Top-left to bottom-right diagonal.
         checkSum = 0;
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            checkSum += board[i][i];
+            checkSum += board[i][i].getMark();
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on the top-left to "
@@ -73,7 +73,7 @@ public class Board {
         checkSum = 0;
         int indexMax = BOARD_WIDTH - 1;
         for (int i = 0; i <= indexMax; i++) {
-            checkSum += board[i][indexMax - i];
+            checkSum += board[i][indexMax - i].getMark();
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on the top-right to "
@@ -105,7 +105,7 @@ public class Board {
     public boolean movesAvailable() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
-                if (board[row][col] == ' ') {
+                if (!board[row][col].isMarked()) {
                     return true;
                 }
             }
@@ -120,9 +120,9 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder strBldr = new StringBuilder();
-        for (char[] row : board) {
-            for (char ch : row) {
-                strBldr.append(ch).append(' ');
+        for (Tile[] row : board) {
+            for (Tile tile : row) {
+                strBldr.append(tile.getMark()).append(' ');
             }
             strBldr.append("\n");
         }
@@ -133,7 +133,7 @@ public class Board {
         return crossTurn;
     }
 
-    public char[][] getBoard() {
+    public Tile[][] getBoard() {
         return board;
     }
 
