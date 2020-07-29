@@ -57,7 +57,7 @@ public class TicTacToe extends Application {
         }
 
         public void update() {
-            this.mark = board.getBoard()[row][col];
+            this.mark = board.getMarkAt(row, col);
             this.setText("" + mark);
         }
     }
@@ -89,7 +89,7 @@ public class TicTacToe extends Application {
         board = new Board();
         for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
             for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
-                Tile tile = new Tile(row, col, board.getBoard()[row][col]);
+                Tile tile = new Tile(row, col, board.getMarkAt(row, col));
                 GridPane.setConstraints(tile, col, row);
                 gameBoard.getChildren().add(tile);
             }

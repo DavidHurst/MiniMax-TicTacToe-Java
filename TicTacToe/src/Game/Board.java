@@ -28,10 +28,10 @@ public class Board {
 
     public boolean placeMark(int row, int col) {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
-                || !board[row][col].isMarked() || gameOver) {
+                || board[row][col].getMark() != ' ' || gameOver) { // 
             return false;
         }
-        board[row][col].markTile(crossTurn ? 'X' : 'O');
+        board[row][col].setMark(crossTurn ? 'X' : 'O');
         togglePlayer();
         checkWin(row, col);
         return true;
@@ -41,7 +41,7 @@ public class Board {
         int checkSum = 0;
         // Check row for winner.
         for (int c = 0; c < BOARD_WIDTH; c++) {
-            checkSum += board[row][c].getMark();
+            checkSum += getMarkAt(row, c);
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on row " + row);
@@ -51,7 +51,7 @@ public class Board {
         // Check column for winner.
         checkSum = 0;
         for (int r = 0; r < BOARD_WIDTH; r++) {
-            checkSum += board[r][col].getMark();
+            checkSum += getMarkAt(r, col);
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on column " + col);
@@ -61,7 +61,7 @@ public class Board {
         // Top-left to bottom-right diagonal.
         checkSum = 0;
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            checkSum += board[i][i].getMark();
+            checkSum += getMarkAt(i, i);
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on the top-left to "
@@ -73,7 +73,7 @@ public class Board {
         checkSum = 0;
         int indexMax = BOARD_WIDTH - 1;
         for (int i = 0; i <= indexMax; i++) {
-            checkSum += board[i][indexMax - i].getMark();
+            checkSum += getMarkAt(i, indexMax - i);
         }
         if (calcWinner(checkSum) != ' ') {
             System.out.println(winningMark + " wins on the top-right to "
@@ -81,7 +81,7 @@ public class Board {
             return;
         }
 
-        if (!movesAvailable()) {
+        if (!anyMovesAvailable()) {
             gameOver = true;
             System.out.println("Tie!");
         }
@@ -102,10 +102,10 @@ public class Board {
         return ' ';
     }
 
-    public boolean movesAvailable() {
+    public boolean anyMovesAvailable() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
-                if (!board[row][col].isMarked()) {
+                if (!isTileMarked(row, col)) {
                     return true;
                 }
             }
@@ -115,6 +115,18 @@ public class Board {
 
     private void togglePlayer() {
         crossTurn = !crossTurn;
+    }
+    
+    public char getMarkAt(int row, int column) {
+        return board[row][column].getMark();
+    }
+    
+    public boolean isTileMarked(int row, int column) {
+        return board[row][column].isMarked();
+    }
+    
+    public void setMarkAt(int row, int column, char newMark) {
+        board[row][column].setMark(newMark);
     }
 
     @Override
@@ -131,10 +143,6 @@ public class Board {
 
     public boolean isCrossTurn() {
         return crossTurn;
-    }
-
-    public Tile[][] getBoard() {
-        return board;
     }
 
     public int getBOARD_WIDTH() {

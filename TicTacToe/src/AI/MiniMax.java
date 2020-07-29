@@ -12,56 +12,58 @@ public class MiniMax {
     private MiniMax() {
     }
 
-    public static int miniMax(Board board, int depth, boolean maximisingPlayer) {
+    public static int miniMax(Board board, int depth, boolean isMax) {
         int score = evaluateBoard(board);
         
         // Terminating node (win/lose board configuration) or max depth reached.
         if (Math.abs(score) == 10 || depth >= MAX_DEPTH) {
             return score;
         }
-        if (!board.movesAvailable()) {
+        if (!board.anyMovesAvailable()) {
             return 0;
         }
 
         // Maximising player, find the maximum attainable value.
-        if (maximisingPlayer) {
-            int best = -1000;
+        if (isMax) {
+            int highestVal = Integer.MIN_VALUE;
             for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
                 for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
-                    if (board.getBoard()[row][col] == ' ') {
-                        board.getBoard()[row][col] = 'X';
-                        best = Math.max(best, miniMax(board, depth + 1, false));
-                        board.getBoard()[row][col] = ' ';
+                    if (!board.isTileMarked(row, col)) {
+                        board.setMarkAt(row, col, 'X');
+                        highestVal = Math.max(highestVal, miniMax(board, 
+                                depth + 1, false));
+                        board.setMarkAt(row, col, ' ');
                     }
                 }
             }
-            return best;
+            return highestVal;
             // Minimising player, find the minimum attainable value;
         } else {
-            int best = 1000;
+            int lowestVal = Integer.MAX_VALUE;
             for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
                 for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
-                    if (board.getBoard()[row][col] == ' ') {
-                        board.getBoard()[row][col] = 'O';
-                        best = Math.min(best, miniMax(board, depth + 1, true));
-                        board.getBoard()[row][col] = ' ';
+                    if (!board.isTileMarked(row, col)) {
+                        board.setMarkAt(row, col, 'O');
+                        lowestVal = Math.min(lowestVal, miniMax(board, 
+                                depth + 1, true));
+                        board.setMarkAt(row, col, ' ');
                     }
                 }
             }
-            return best;
+            return lowestVal;
         }
     }
 
     public static int[] getBestMove(Board board) {
         int[] bestMove = new int[]{-1, -1};
-        int bestValue = -1000;
+        int bestValue = Integer.MIN_VALUE;
         
         for (int row = 0; row < board.getBOARD_WIDTH(); row++) {
             for (int col = 0; col < board.getBOARD_WIDTH(); col++) {
-                if (board.getBoard()[row][col] == ' ') {
-                    board.getBoard()[row][col] = 'X';
+                if (!board.isTileMarked(row, col)) {
+                    board.setMarkAt(row, col, 'X');
                     int moveValue = miniMax(board, 0, false);
-                    board.getBoard()[row][col] = ' ';
+                    board.setMarkAt(row, col, ' ');
                     if (moveValue > bestValue) {
                         bestMove[0] = row;
                         bestMove[1] = col;
@@ -73,16 +75,16 @@ public class MiniMax {
         return bestMove;
     }
 
-    private static int evaluateBoard(Board b) {
+    private static int evaluateBoard(Board board) {
         int checkSum = 0;
-        int bWidth = b.getBOARD_WIDTH();
+        int bWidth = board.getBOARD_WIDTH();
         int Xwin = 'X' * bWidth;
         int Owin = 'O' * bWidth;
 
         // Check rows for winner.
         for (int row = 0; row < bWidth; row++) {
             for (int col = 0; col < bWidth; col++) {
-                checkSum += b.getBoard()[row][col];
+                checkSum += board.getMarkAt(row, col);
             }
             if (checkSum == Xwin) {
                 return 10;
@@ -96,7 +98,7 @@ public class MiniMax {
         checkSum = 0;
         for (int col = 0; col < bWidth; col++) {
             for (int row = 0; row < bWidth; row++) {
-                checkSum += b.getBoard()[row][col];
+                checkSum += board.getMarkAt(row, col);
             }
             if (checkSum == Xwin) {
                 return 10;
@@ -109,8 +111,8 @@ public class MiniMax {
         // Check diagonals for winner.
         // Top-left to bottom-right diagonal.
         checkSum = 0;
-        for (int index = 0; index < bWidth; index++) {
-            checkSum += b.getBoard()[index][index];
+        for (int i = 0; i < bWidth; i++) {
+            checkSum += board.getMarkAt(i, i);
         }
         if (checkSum == Xwin) {
             return 10;
@@ -121,8 +123,8 @@ public class MiniMax {
         // Top-right to bottom-left diagonal.
         checkSum = 0;
         int indexMax = bWidth - 1;
-        for (int index = 0; index <= indexMax; index++) {
-            checkSum += b.getBoard()[index][indexMax - index];
+        for (int i = 0; i <= indexMax; i++) {
+            checkSum += board.getMarkAt(i, indexMax - i);
         }
         if (checkSum == Xwin) {
             return 10;
