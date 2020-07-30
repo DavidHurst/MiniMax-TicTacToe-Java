@@ -3,12 +3,15 @@ package Game;
 import AI.MiniMax;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -147,16 +150,17 @@ public class TicTacToe extends Application {
     }
 
     private void endGame() {
-        Alert gameOverAlert = new Alert(AlertType.INFORMATION);
         gameTimer.stop();
+        Alert gameOverAlert = new Alert(AlertType.INFORMATION, "", 
+                        new ButtonType("New Game"));
         char winner = board.getWinningMark();
 
         gameOverAlert.setTitle("Game Over");
-        gameOverAlert.setContentText("Click OK to start a new game.");
+        gameOverAlert.setHeaderText(null);
         if (winner == ' ') {
-            gameOverAlert.setHeaderText("Tie!");
+            gameOverAlert.setContentText("Tie!");
         } else {
-            gameOverAlert.setHeaderText(winner + " wins!");
+            gameOverAlert.setContentText(winner + " wins!");
         }
         gameOverAlert.setOnHidden(e -> {
             gameOverAlert.close();

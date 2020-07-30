@@ -7,7 +7,7 @@ public class Board {
 
     private final Tile[][] board;
     private char winningMark;
-    private final int BOARD_WIDTH = 3;
+    private final int BOARD_WIDTH = 4;
     private boolean crossTurn, gameOver;
 
     public Board() {
@@ -28,7 +28,7 @@ public class Board {
 
     public boolean placeMark(int row, int col) {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
-                || board[row][col].getMark() != ' ' || gameOver) { // 
+                || isTileMarked(row, col) || gameOver) { 
             return false;
         }
         board[row][col].setMark(crossTurn ? 'X' : 'O');
@@ -101,6 +101,10 @@ public class Board {
         }
         return ' ';
     }
+    
+    private void togglePlayer() {
+        crossTurn = !crossTurn;
+    }
 
     public boolean anyMovesAvailable() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
@@ -113,10 +117,6 @@ public class Board {
         return false;
     }
 
-    private void togglePlayer() {
-        crossTurn = !crossTurn;
-    }
-    
     public char getMarkAt(int row, int column) {
         return board[row][column].getMark();
     }
