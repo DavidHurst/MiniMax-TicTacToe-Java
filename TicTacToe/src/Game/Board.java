@@ -7,7 +7,7 @@ public class Board {
 
     private final Tile[][] board;
     private char winningMark;
-    private final int BOARD_WIDTH = 4;
+    private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
 
     public Board() {

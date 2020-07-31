@@ -4,8 +4,6 @@ package AI;
 import Game.Board;
 
 /**
- * MiniMax with an improved heuristic which takes into account the number of 
- * marks on the row.
  * @author 198780
  */
 public class MiniMaxImproved {
@@ -16,7 +14,7 @@ public class MiniMaxImproved {
     }
 
     public static int miniMax(Board board, int depth, boolean isMax) {
-        int score = evaluateBoard(board);
+        int score = evaluateBoard(board, depth);
         
         // Terminating node (win/lose board configuration) or max depth reached.
         if (Math.abs(score) == 10 || depth >= MAX_DEPTH) {
@@ -78,10 +76,7 @@ public class MiniMaxImproved {
         return bestMove;
     }
 
-    /* Improve heuristic, take into account number of marks and maybe depth as 
-     * well.
-     */
-    private static int evaluateBoard(Board board) {
+    private static int evaluateBoard(Board board, int depth) {
         int checkSum = 0;
         int bWidth = board.getWidth();
         int Xwin = 'X' * bWidth;
@@ -93,9 +88,9 @@ public class MiniMaxImproved {
                 checkSum += board.getMarkAt(row, col);
             }
             if (checkSum == Xwin) {
-                return 10;
+                return 10 - depth;
             } else if (checkSum == Owin) {
-                return -10;
+                return -10 + depth;
             }
             checkSum = 0;
         }
@@ -107,9 +102,9 @@ public class MiniMaxImproved {
                 checkSum += board.getMarkAt(row, col);
             }
             if (checkSum == Xwin) {
-                return 10;
+                return 10 - depth;
             } else if (checkSum == Owin) {
-                return -10;
+                return -10 + depth;
             }
             checkSum = 0;
         }
@@ -121,9 +116,9 @@ public class MiniMaxImproved {
             checkSum += board.getMarkAt(i, i);
         }
         if (checkSum == Xwin) {
-            return 10;
+            return 10 - depth;
         } else if (checkSum == Owin) {
-            return -10;
+            return -10 + depth;
         }
 
         // Top-right to bottom-left diagonal.
@@ -133,9 +128,9 @@ public class MiniMaxImproved {
             checkSum += board.getMarkAt(i, indexMax - i);
         }
         if (checkSum == Xwin) {
-            return 10;
+            return 10 - depth;
         } else if (checkSum == Owin) {
-            return -10;
+            return -10 + depth;
         }
         
         return 0;
