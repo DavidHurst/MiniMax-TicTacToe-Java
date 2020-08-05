@@ -10,7 +10,7 @@ import Game.Board;
 public class MiniMaxAlphaBeta {
     
     private static final int MAX_DEPTH = 12;
-
+    
     private MiniMaxAlphaBeta() {
     }
 
@@ -19,7 +19,7 @@ public class MiniMaxAlphaBeta {
         int score = evaluateBoard(board);
         
         // Terminating node (win/lose board configuration) or max depth reached.
-        if (Math.abs(score) == 10 || depth >= MAX_DEPTH) {
+        if (Math.abs(score) == 10 || depth == 0) {
             return score;
         }
         if (!board.anyMovesAvailable()) {
@@ -34,7 +34,7 @@ public class MiniMaxAlphaBeta {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'X');
                         highestVal = Math.max(highestVal, miniMax(board, 
-                                depth + 1, alpha, beta, false));
+                                depth - 1, alpha, beta, false));
                         board.setMarkAt(row, col, ' ');
                         alpha = Math.max(alpha, highestVal);
                         if (alpha >= beta) {
@@ -52,7 +52,7 @@ public class MiniMaxAlphaBeta {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'O');
                         lowestVal = Math.min(lowestVal, miniMax(board, 
-                                depth + 1, alpha, beta, true));
+                                depth - 1, alpha, beta, true));
                         board.setMarkAt(row, col, ' ');
                         beta = Math.min(beta, lowestVal);
                         if(beta <= alpha) {
@@ -73,7 +73,7 @@ public class MiniMaxAlphaBeta {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
                     board.setMarkAt(row, col, 'X');
-                    int moveValue = miniMax(board, 0, Integer.MIN_VALUE, 
+                    int moveValue = miniMax(board, MAX_DEPTH, Integer.MIN_VALUE, 
                             Integer.MAX_VALUE, false);
                     board.setMarkAt(row, col, ' ');
                     if (moveValue > bestValue) {

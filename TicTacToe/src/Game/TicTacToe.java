@@ -3,6 +3,8 @@ package Game;
 import AI.MiniMax;
 import AI.MiniMaxAlphaBeta;
 import AI.MiniMaxImproved;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -73,7 +75,7 @@ public class TicTacToe extends Application {
     public void start(Stage primaryStage) {
         root = new BorderPane();
 
-        root.setCenter(initialiseGameGUI());
+        root.setCenter(generateGUI());
         root.setTop(initialiseMenu());
 
         Scene scene = new Scene(root);
@@ -85,7 +87,7 @@ public class TicTacToe extends Application {
         primaryStage.show();
     }
 
-    private static GridPane initialiseGameGUI() {
+    private static GridPane generateGUI() {
         gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         
@@ -145,7 +147,7 @@ public class TicTacToe extends Application {
     }
 
     private void resetGame() {
-        root.setCenter(initialiseGameGUI());
+        root.setCenter(generateGUI());
         gameTimer.start();
     }
 
@@ -158,7 +160,7 @@ public class TicTacToe extends Application {
         gameOverAlert.setTitle("Game Over");
         gameOverAlert.setHeaderText(null);
         if (winner == ' ') {
-            gameOverAlert.setContentText("Tie!");
+            gameOverAlert.setContentText("Draw!");
         } else {
             gameOverAlert.setContentText(winner + " wins!");
         }

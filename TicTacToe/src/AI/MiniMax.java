@@ -8,7 +8,7 @@ import Game.Board;
 public class MiniMax {
     
     private static final int MAX_DEPTH = 6;
-
+    
     private MiniMax() {
     }
 
@@ -16,7 +16,7 @@ public class MiniMax {
         int score = evaluateBoard(board);
         
         // Terminating node (win/lose board configuration) or max depth reached.
-        if (Math.abs(score) == 10 || depth >= MAX_DEPTH) {
+        if (Math.abs(score) == 10 || depth == 0) {
             return score;
         }
         if (!board.anyMovesAvailable()) {
@@ -31,7 +31,7 @@ public class MiniMax {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'X');
                         highestVal = Math.max(highestVal, miniMax(board, 
-                                depth + 1, false));
+                                depth - 1, false));
                         board.setMarkAt(row, col, ' ');
                     }
                 }
@@ -45,7 +45,7 @@ public class MiniMax {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'O');
                         lowestVal = Math.min(lowestVal, miniMax(board, 
-                                depth + 1, true));
+                                depth - 1, true));
                         board.setMarkAt(row, col, ' ');
                     }
                 }
@@ -62,7 +62,7 @@ public class MiniMax {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
                     board.setMarkAt(row, col, 'X');
-                    int moveValue = miniMax(board, 0, false);
+                    int moveValue = miniMax(board, MAX_DEPTH, false);
                     board.setMarkAt(row, col, ' ');
                     if (moveValue > bestValue) {
                         bestMove[0] = row;
