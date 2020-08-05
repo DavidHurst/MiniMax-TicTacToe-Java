@@ -1,10 +1,6 @@
 package Game;
 
-import AI.MiniMax;
-import AI.MiniMaxAlphaBeta;
-import AI.MiniMaxImproved;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import AI.MiniMaxCombined;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -132,7 +128,7 @@ public class TicTacToe extends Application {
     }
 
     private static void playAI() {
-        int[] move = MiniMaxAlphaBeta.getBestMove(board);
+        int[] move = MiniMaxCombined.getBestMove(board);
         int row = move[0];
         int col = move[1];
         board.placeMark(row, col);

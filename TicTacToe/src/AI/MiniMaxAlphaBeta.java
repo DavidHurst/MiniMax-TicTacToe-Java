@@ -1,23 +1,21 @@
-
 package AI;
 
 import Game.Board;
 
 /**
- *
- * @author 198780
+ * @author DavidHurst
  */
 public class MiniMaxAlphaBeta {
-    
-    private static final int MAX_DEPTH = 12;
-    
+
+    private static final int MAX_DEPTH = 10;
+
     private MiniMaxAlphaBeta() {
     }
 
-    public static int miniMax(Board board, int depth, int alpha, int beta, 
+    public static int miniMax(Board board, int depth, int alpha, int beta,
             boolean isMax) {
         int score = evaluateBoard(board);
-        
+
         // Terminating node (win/lose board configuration) or max depth reached.
         if (Math.abs(score) == 10 || depth == 0) {
             return score;
@@ -33,7 +31,7 @@ public class MiniMaxAlphaBeta {
                 for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'X');
-                        highestVal = Math.max(highestVal, miniMax(board, 
+                        highestVal = Math.max(highestVal, miniMax(board,
                                 depth - 1, alpha, beta, false));
                         board.setMarkAt(row, col, ' ');
                         alpha = Math.max(alpha, highestVal);
@@ -51,11 +49,11 @@ public class MiniMaxAlphaBeta {
                 for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'O');
-                        lowestVal = Math.min(lowestVal, miniMax(board, 
+                        lowestVal = Math.min(lowestVal, miniMax(board,
                                 depth - 1, alpha, beta, true));
                         board.setMarkAt(row, col, ' ');
                         beta = Math.min(beta, lowestVal);
-                        if(beta <= alpha) {
+                        if (beta <= alpha) {
                             return lowestVal;
                         }
                     }
@@ -68,12 +66,12 @@ public class MiniMaxAlphaBeta {
     public static int[] getBestMove(Board board) {
         int[] bestMove = new int[]{-1, -1};
         int bestValue = Integer.MIN_VALUE;
-        
+
         for (int row = 0; row < board.getWidth(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
                     board.setMarkAt(row, col, 'X');
-                    int moveValue = miniMax(board, MAX_DEPTH, Integer.MIN_VALUE, 
+                    int moveValue = miniMax(board, MAX_DEPTH, Integer.MIN_VALUE,
                             Integer.MAX_VALUE, false);
                     board.setMarkAt(row, col, ' ');
                     if (moveValue > bestValue) {
@@ -143,7 +141,7 @@ public class MiniMaxAlphaBeta {
         } else if (checkSum == Owin) {
             return -10;
         }
-        
+
         return 0;
     }
 }

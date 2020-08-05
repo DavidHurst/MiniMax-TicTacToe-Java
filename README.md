@@ -4,9 +4,9 @@
 
 ## Tic Tac Toe
 
-The Tic Tac Toe GUI is implemented using JavaFX, the board size is variable and can be altered by changing the BOARD_WIDTH constant in the Board class. Boards of size 4x4 or larger with a maximum search depth over 6 are essentially unplayable using the vanilla MiniMax algorithm but the Alpha-Beta optimisation improves this dramatically allowing for much larger games to be played.
+The Tic Tac Toe GUI is implemented using JavaFX, the board size is variable and can be altered by changing the BOARD_WIDTH constant in the Board class. Boards of size 4x4 or larger with a maximum search depth over 6 are essentially unplayable using the vanilla MiniMax algorithm but the Alpha-Beta optimisation improves this dramatically allowing for much larger games to be played and the MiniMaxImproved implementation improves the heuristic used to evaluate boards making the algorithm win faster or loose slower. MiniMaxCombined combines the improved heuristic with alpha-beta optimisation
 
- —— Add images of different size boards ——
+ ![3x3Board](https://github.com/DavidHurst/MiniMax-TicTacToe-Java/tree/master/Images/3x3Board.png "3x3Board")  ![4x4Board](https://github.com/DavidHurst/MiniMax-TicTacToe-Java/tree/master/Images/4x4Board.png "4x4Board")  ![5x5Board](https://github.com/DavidHurst/MiniMax-TicTacToe-Java/tree/master/Images/5x5Board.png "5x5Board")
 
 ---
 
@@ -20,9 +20,9 @@ This implementation also explores every possible board configuration it can, eve
 
 ## MiniMax Improved
 
-The vanilla MiniMax algorithm's heuristic function sometimes results in a slower victory or a faster loss due to the heuristic not taking into account the depth of the winning configuration which means that a win on the next move is equally as valuable as a win 2 moves down the game tree so winning faster is no incentivised.
+The vanilla MiniMax algorithm's heuristic function sometimes results in a slower victory or a faster loss due to the heuristic not taking into account the depth of the winning configuration. MiniMaxImproved and MiniMaxCombined address this by adding the depth to maximising evaluations and takning depth away from minimising evaluations, this has the effect of making wins which can be achieved in fewer moves more favourable and loses which can be achieved in the most moves more favourable.
 
-— Add gif of slow win — —- Add gif of fixed version —-
+ ![SlowVictory](https://github.com/DavidHurst/MiniMax-TicTacToe-Java/tree/master/Images/SlovVictory.gif "SlowVictory") ![FastVictory](https://github.com/DavidHurst/MiniMax-TicTacToe-Java/tree/master/Images/FastVictory.gif "FastVictory")
 
 ---
 

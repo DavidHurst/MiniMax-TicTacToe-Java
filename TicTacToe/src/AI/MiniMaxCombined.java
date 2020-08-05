@@ -5,22 +5,20 @@ import Game.Board;
 /**
  * @author DavidHurst
  */
-public class MiniMax {
+public class MiniMaxCombined {
 
-    private static final int MAX_DEPTH = 6;
+    private static final int MAX_DEPTH = 10;
 
-    private MiniMax() {
+    private MiniMaxCombined() {
     }
 
-    public static int miniMax(Board board, int depth, boolean isMax) {
-        int score = evaluateBoard(board);
+    public static int miniMax(Board board, int depth, int alpha, int beta,
+            boolean isMax) {
+        int score = evaluateBoard(board, depth);
 
         // Terminating node (win/lose board configuration) or max depth reached.
-        if (Math.abs(score) == 10 || depth == 0) {
+        if (Math.abs(score) > 0 || depth == 0 || !board.anyMovesAvailable()) {
             return score;
-        }
-        if (!board.anyMovesAvailable()) {
-            return 0;
         }
 
         // Maximising player, find the maximum attainable value.
@@ -31,8 +29,12 @@ public class MiniMax {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'X');
                         highestVal = Math.max(highestVal, miniMax(board,
-                                depth - 1, false));
+                                depth - 1, alpha, beta, false));
                         board.setMarkAt(row, col, ' ');
+                        alpha = Math.max(alpha, highestVal);
+                        if (alpha >= beta) {
+                            return highestVal;
+                        }
                     }
                 }
             }
@@ -45,8 +47,12 @@ public class MiniMax {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'O');
                         lowestVal = Math.min(lowestVal, miniMax(board,
-                                depth - 1, true));
+                                depth - 1, alpha, beta, true));
                         board.setMarkAt(row, col, ' ');
+                        beta = Math.min(beta, lowestVal);
+                        if (beta <= alpha) {
+                            return lowestVal;
+                        }
                     }
                 }
             }
@@ -62,7 +68,8 @@ public class MiniMax {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
                     board.setMarkAt(row, col, 'X');
-                    int moveValue = miniMax(board, MAX_DEPTH, false);
+                    int moveValue = miniMax(board, MAX_DEPTH, Integer.MIN_VALUE,
+                            Integer.MAX_VALUE, false);
                     board.setMarkAt(row, col, ' ');
                     if (moveValue > bestValue) {
                         bestMove[0] = row;
@@ -75,7 +82,7 @@ public class MiniMax {
         return bestMove;
     }
 
-    private static int evaluateBoard(Board board) {
+    private static int evaluateBoard(Board board, int depth) {
         int checkSum = 0;
         int bWidth = board.getWidth();
         int Xwin = 'X' * bWidth;
@@ -87,9 +94,9 @@ public class MiniMax {
                 checkSum += board.getMarkAt(row, col);
             }
             if (checkSum == Xwin) {
-                return 10;
+                return 10 + depth;
             } else if (checkSum == Owin) {
-                return -10;
+                return -10 - depth;
             }
             checkSum = 0;
         }
@@ -101,9 +108,9 @@ public class MiniMax {
                 checkSum += board.getMarkAt(row, col);
             }
             if (checkSum == Xwin) {
-                return 10;
+                return 10 + depth;
             } else if (checkSum == Owin) {
-                return -10;
+                return -10 - depth;
             }
             checkSum = 0;
         }
@@ -115,9 +122,9 @@ public class MiniMax {
             checkSum += board.getMarkAt(i, i);
         }
         if (checkSum == Xwin) {
-            return 10;
+            return 10 + depth;
         } else if (checkSum == Owin) {
-            return -10;
+            return -10 - depth;
         }
 
         // Top-right to bottom-left diagonal.
@@ -127,12 +134,11 @@ public class MiniMax {
             checkSum += board.getMarkAt(i, indexMax - i);
         }
         if (checkSum == Xwin) {
-            return 10;
+            return 10 + depth;
         } else if (checkSum == Owin) {
-            return -10;
+            return -10 - depth;
         }
 
         return 0;
     }
-
 }
