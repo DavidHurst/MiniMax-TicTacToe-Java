@@ -16,7 +16,7 @@ This implementation also explores every possible board configuration it can, eve
 
 ## MiniMax Improved
 
-The vanilla MiniMax algorithm's heuristic function sometimes results in a slower victory or a faster loss due to the heuristic not taking into account the depth of the winning configuration. MiniMaxImproved and MiniMaxCombined address this by adding the depth to maximising evaluations and takning depth away from minimising evaluations, this has the effect of making wins which can be achieved in fewer moves more favourable and loses which can be achieved in the most moves more favourable.   
+The vanilla MiniMax algorithm's heuristic function sometimes results in a slower victory or a faster loss due to the heuristic not taking into account the depth of the winning configuration. MiniMaxImproved and MiniMaxCombined address this by adding the depth to maximising evaluations and taking depth away from minimising evaluations, this has the effect of making wins which can be achieved in fewer moves more favourable and loses which can be achieved in the most moves more favourable.   
 Below are demonstrations of a victory not being seized immediately where the vanilla algorithm is being used (left gif) and the improved version that takes the win immediately where the improved algorithm is being used (right gif).   
 
 <img src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/SlowVictory.gif" width="309" height="360"> <img align="right" src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/FastVictory.gif" width="309" height="360">   
@@ -28,9 +28,9 @@ Alpha-Beta optimises the Minimax algorithm by not evaluating a node's children w
 - Alpha is associated with the *max* nodes and represents the minimum score that the maximising player is assured of i.e. the best alternative for the maximising player.
 - Beta is associated with *min* nodes and represents the maximum score that the minimising player is assured of i.e. the best alternative for the minimising player.   
 
-Pruning when it is the minimising player's turn can be done whenever a node's value satisfies alpha ≥ beta, this represents the node being worse for the maximising player than it's best alternative and therefore that the children of this node will never actually be reached in play. Similarly, the maximising player can prune whenever a node's value satisfies alpha ≤ beta, representing the node being worse for the minimising player than it's best alternative. 
+Pruning from a minimising node is done when alpha is greater than or equal to the node's value which represents the node being worse for the maximising player than its best alternative and that the maximising player would never choose this node and the children of this node will never actually be reached in play. Pruning from a maximising node is done when beta is less than or equal to the node's value, representing the minimising player having a better alternative and never choosing this node. 
 
-Alpha-Beta improves MiniMax's efficiency from O(b^d) to O(sqrt(b^d)) by drastically reducing the branching factor of the game tree. The efficiency increase comes from the pruning of branches explained above and works essentially by using the second player's best move to counter all of the the first player's move instead of evaluating every single move of both players.   
+Alpha-Beta improves MiniMax's efficiency from O(b^d) to O(sqrt(b^d)) by drastically reducing the branching factor of the game tree. The efficiency increase comes from the pruning of branches explained above and works essentially by using the second player's best move to counter all of the first player's move instead of evaluating every single move of both players.   
 
 ---
 
