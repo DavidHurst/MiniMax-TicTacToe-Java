@@ -16,7 +16,7 @@ This implementation also explores every possible board configuration it can, eve
 
 ## MiniMax Improved
 
-The vanilla MiniMax algorithm's heuristic function sometimes results in a slower victory or a faster loss due to the heuristic not taking into account the depth of the winning configuration. MiniMaxImproved and MiniMaxCombined address this by adding the depth to maximising evaluations and taking depth away from minimising evaluations, this has the effect of making wins which can be achieved in fewer moves more favourable and loses which can be achieved in the most moves more favourable.   
+The vanilla MiniMax algorithm's heuristic function sometimes results in a slower victory or a faster loss due to the heuristic not taking into account how many moves it would take to realise a certain configuration. MiniMaxImproved addresses this by adding the depth to maximising evaluations and taking depth away from minimising evaluations, this has the effect of making wins which can be achieved in fewer moves and loses which can be achieved in the most moves more favourable.   
 Below are demonstrations of a victory not being seized immediately where the vanilla algorithm is being used (left gif) and the improved version that takes the win immediately where the improved algorithm is being used (right gif).   
 
 <img src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/SlowVictory.gif" width="309" height="360"> <img align="right" src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/FastVictory.gif" width="309" height="360">   
