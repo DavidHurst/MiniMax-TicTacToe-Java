@@ -28,7 +28,7 @@ Alpha-Beta optimises the Minimax algorithm by not evaluating a node's children w
 - Alpha is associated with the *max* nodes and represents the minimum score that the maximising player is assured of i.e. the best alternative for the maximising player.
 - Beta is associated with *min* nodes and represents the maximum score that the minimising player is assured of i.e. the best alternative for the minimising player.   
 
-Pruning when it is the minimising player's turn can be done whenever a node's value satisfies alpha ≥ beta, this represents the node being worse for the maximising player than it's best alternative and therefore that the children of this node will never actually be reached in play. Similarly, the maximising player can prune whenever a node's value satisfies alpha ≤ beta, representing the node being worse for the minimising player than it's best alternative. 
+Pruning when it is the minimising player's turn can be done whenever a node's value satisfies alpha ≥ beta, this represents the node being worse for the maximising player than it's best alternative and therefore that the children of this node will never actually be reached in play. Similarly, the maximising player can prune whenever a node's value satisfies beta ≤ alpha, representing the node being worse for the minimising player than it's best alternative. 
 
 Alpha-Beta improves MiniMax's efficiency from O(b^d) to O(sqrt(b^d)) by drastically reducing the branching factor of the game tree. The efficiency increase comes from the pruning of branches explained above and works essentially by using the second player's best move to counter all of the the first player's move instead of evaluating every single move of both players.   
 
