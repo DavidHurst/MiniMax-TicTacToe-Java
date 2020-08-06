@@ -3,7 +3,7 @@
 
 ## Tic Tac Toe
 
-The Tic Tac Toe GUI is implemented using JavaFX, the board size is variable and can be altered by changing the BOARD_WIDTH constant in the Board class. Boards of size 4x4 or larger with a maximum search depth over 6 are essentially unplayable using the vanilla MiniMax algorithm but the Alpha-Beta optimisation improves this dramatically allowing for much larger games to be played and the MiniMaxImproved implementation improves the heuristic used to evaluate boards making the algorithm win faster or lose slower. MiniMaxCombined combines the improved heuristic with alpha-beta optimisation.   
+The Tic Tac Toe GUI is implemented using JavaFX, the board size is variable and can be altered by changing the BOARD_WIDTH constant in the Board class. Boards of size 4x4 or larger with a maximum search depth over 6 are essentially unplayable using the vanilla MiniMax algorithm but the Alpha-Beta optimisation improves this dramatically allowing for much larger games to be played and the MiniMaxImproved implementation improves the heuristic used to evaluate boards making the algorithm win faster or lose slower. MiniMaxCombined combines the improved heuristic with Alpha-Beta optimisation.   
 
 <img align="center" src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/3x3Board.PNG" width="226" height="262"> <img align="center" src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/4x4Board.PNG" width="270.9" height="303.75"> <img align="center" src="https://github.com/DavidHurst/MiniMax-TicTacToe-Java/blob/master/Images/5x5Board.PNG" width="300.8" height="330.4">
  
