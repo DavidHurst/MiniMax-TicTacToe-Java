@@ -31,34 +31,42 @@ public class TicTacToe extends Application {
     private MenuItem newGameOption;
     private BorderPane root;
 
+    /**
+     * Objects of this class visually represent the tiles in the game and handle
+     * user input.
+     */
     public final static class Tile extends Button {
 
         private final int row;
         private final int col;
         private char mark;
 
-        public Tile(int r, int c, char mrk) {
-            row = r;
-            col = c;
-            mark = mrk;
+        public Tile(int initRow, int initCol, char initMark) {
+            row = initRow;
+            col = initCol;
+            mark = initMark;
             initialiseTile();
         }
 
         private void initialiseTile() {
             this.setOnMouseClicked(e -> {
                 if (!board.isCrossTurn()) {
-                    board.placeMark(row, col);
+                    board.placeMark(this.row, this.col);
                     this.update();
                 }
             });
             this.setStyle("-fx-font-size:70");
             this.setTextAlignment(TextAlignment.CENTER);
             this.setMinSize(150.0, 150.0);
-            this.setText("" + mark);
+            this.setText("" + this.mark);
         }
 
+        /**
+         * Retrieves state of tile from board which has the corresponding row 
+         * and column coordinate and updates this object's text field with it.
+         */
         public void update() {
-            this.mark = board.getMarkAt(row, col);
+            this.mark = board.getMarkAt(this.row, this.col);
             this.setText("" + mark);
         }
     }
@@ -83,11 +91,16 @@ public class TicTacToe extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Fills and returns a GridPane with tiles, this GridPane is representative
+     * of the game board.
+     * @return the GridPane
+     */
     private static GridPane generateGUI() {
         gameBoard = new GridPane();
+        board = new Board();
         gameBoard.setAlignment(Pos.CENTER);
         
-        board = new Board();
         for (int row = 0; row < board.getWidth(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 Tile tile = new Tile(row, col, board.getMarkAt(row, col));
@@ -111,6 +124,10 @@ public class TicTacToe extends Application {
         return menuBar;
     }
 
+    /**
+     * Runs the main game loop which is responsible for playing the AI's turn 
+     * as long as the game is still ongoing.
+     */
     private void runGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
@@ -127,6 +144,10 @@ public class TicTacToe extends Application {
         gameTimer.start();
     }
 
+    /**
+     * Analyses the current state of the board and plays the move best for the X
+     * player. Updates the tile it places a mark on also.
+     */
     private static void playAI() {
         int[] move = MiniMaxCombined.getBestMove(board);
         int row = move[0];
@@ -144,9 +165,12 @@ public class TicTacToe extends Application {
 
     private void resetGame() {
         root.setCenter(generateGUI());
-        gameTimer.start();
+        runGameLoop();
     }
 
+    /**
+     * Stops the game loop and displays the result of the game.
+     */
     private void endGame() {
         gameTimer.stop();
         Alert gameOverAlert = new Alert(AlertType.INFORMATION, "", 

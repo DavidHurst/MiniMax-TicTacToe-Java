@@ -2,7 +2,7 @@
 package Game;
 
 /**
- * @author 198780
+ * @author DavidHurst
  */
 public class Tile {
     
@@ -13,10 +13,7 @@ public class Tile {
     }
     
     public boolean isMarked() {
-        if (this.mark == 'X' || this.mark == 'O') {
-            return true;
-        }
-        return false;
+        return this.mark == 'X' || this.mark == 'O';
     }
     
     public void setMark(char newMark) {
