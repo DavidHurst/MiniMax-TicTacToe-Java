@@ -11,6 +11,7 @@ public class Board {
     private Mark winningMark;
     private final int BOARD_WIDTH = 3;
     private boolean crossTurn, gameOver;
+    private int availableMoves = BOARD_WIDTH * BOARD_WIDTH;
 
     public Board() {
         board = new Mark[BOARD_WIDTH][BOARD_WIDTH];
@@ -42,6 +43,7 @@ public class Board {
                 || isTileMarked(row, col) || gameOver) {
             return false;
         }
+        availableMoves--;
         board[row][col] = crossTurn ? X : O;
         togglePlayer();
         checkWin(row, col);
@@ -131,14 +133,7 @@ public class Board {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean anyMovesAvailable() {
-        for (int row = 0; row < BOARD_WIDTH; row++) {
-            for (int col = 0; col < BOARD_WIDTH; col++) {
-                if (!isTileMarked(row, col)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return availableMoves > 0;
     }
 
     public Mark getMarkAt(int row, int column) {
