@@ -1,18 +1,13 @@
-package Game;
+package game;
 
-import AI.MiniMaxCombined;
+import ai.MiniMaxCombined;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
@@ -113,7 +108,7 @@ public class TicTacToe extends Application {
 
     private MenuBar initialiseMenu() {
         menuBar = new MenuBar();
-        gameMenu = new Menu("Game");
+        gameMenu = new Menu("game");
         newGameOption = new MenuItem("New Game");
 
         gameMenu.getItems().add(newGameOption);

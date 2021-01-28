@@ -1,16 +1,17 @@
-package AI;
+package ai;
 
-import Game.Board;
+import game.Board;
 
 /**
- * The MiniMax algorithm optimised with Alpha-Beta pruning.
+ * The MiniMax algorithm which is optimised with Alpha-Beta pruning and improved
+ * to have a better heuristic for it's evaluation function.
  * @author DavidHurst
  */
-public class MiniMaxAlphaBeta {
+public class MiniMaxCombined {
 
     private static final int MAX_DEPTH = 12;
 
-    private MiniMaxAlphaBeta() {
+    private MiniMaxCombined() {
     }
 
     /**
@@ -30,10 +31,10 @@ public class MiniMaxAlphaBeta {
      */
     public static int miniMax(Board board, int depth, int alpha, int beta,
             boolean isMax) {
-        int boardVal = evaluateBoard(board);
+        int boardVal = evaluateBoard(board, depth);
 
         // Terminal node (win/lose/draw) or max depth reached.
-        if (Math.abs(boardVal) == 10 || depth == 0 
+        if (Math.abs(boardVal) > 0 || depth == 0 
                 || !board.anyMovesAvailable()) {
             return boardVal;
         }
@@ -107,11 +108,14 @@ public class MiniMaxAlphaBeta {
     /**
      * Evaluate the given board from the perspective of the X player, return 
      * 10 if a winning board configuration is found, -10 for a losing one and 0 
-     * for a draw.
+     * for a draw, weight the value of a win/loss/draw according to how many 
+     * moves it would take to realise it using the depth of the game tree the
+     * board configuration is at.
      * @param board Board to evaluate
+     * @param depth depth of the game tree the board configuration is at
      * @return value of the board
      */
-    private static int evaluateBoard(Board board) {
+    private static int evaluateBoard(Board board, int depth) {
         int rowSum = 0;
         int bWidth = board.getWidth();
         int Xwin = 'X' * bWidth;
@@ -123,9 +127,9 @@ public class MiniMaxAlphaBeta {
                 rowSum += board.getMarkAt(row, col);
             }
             if (rowSum == Xwin) {
-                return 10;
+                return 10 + depth;
             } else if (rowSum == Owin) {
-                return -10;
+                return -10 - depth;
             }
             rowSum = 0;
         }
@@ -137,9 +141,9 @@ public class MiniMaxAlphaBeta {
                 rowSum += board.getMarkAt(row, col);
             }
             if (rowSum == Xwin) {
-                return 10;
+                return 10 + depth;
             } else if (rowSum == Owin) {
-                return -10;
+                return -10 - depth;
             }
             rowSum = 0;
         }
@@ -151,9 +155,9 @@ public class MiniMaxAlphaBeta {
             rowSum += board.getMarkAt(i, i);
         }
         if (rowSum == Xwin) {
-            return 10;
+            return 10 + depth;
         } else if (rowSum == Owin) {
-            return -10;
+            return -10 - depth;
         }
 
         // Top-right to bottom-left diagonal.
@@ -163,9 +167,9 @@ public class MiniMaxAlphaBeta {
             rowSum += board.getMarkAt(i, indexMax - i);
         }
         if (rowSum == Xwin) {
-            return 10;
+            return 10 + depth;
         } else if (rowSum == Owin) {
-            return -10;
+            return -10 - depth;
         }
 
         return 0;

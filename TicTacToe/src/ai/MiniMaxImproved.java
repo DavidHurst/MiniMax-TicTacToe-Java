@@ -1,36 +1,31 @@
-package AI;
+package ai;
 
-import Game.Board;
+import game.Board;
 
 /**
- * The MiniMax algorithm which is optimised with Alpha-Beta pruning and improved
- * to have a better heuristic for it's evaluation function.
+ * The MiniMax algorithm adapted to take into account how many moves it would
+ * take to realise winning/losing/drawing board configurations to minimise the 
+ * time taken to win or elongate the time taken to lose.
  * @author DavidHurst
  */
-public class MiniMaxCombined {
+public class MiniMaxImproved {
 
-    private static final int MAX_DEPTH = 12;
+    private static final int MAX_DEPTH = 6;
 
-    private MiniMaxCombined() {
+    private MiniMaxImproved() {
     }
 
     /**
      * Play moves on the board alternating between playing as X and O analysing 
      * the board each time to return the value of the highest value move for the
-     * X player. Use variables alpha and beta as the best alternative for the 
-     * maximising player (X) and the best alternative for the minimising player 
-     * (O) respectively, do not search descendants of nodes if player's 
-     * alternatives are better than the node. Return the highest value move when 
-     * a terminal node or the maximum search depth is reached.
+     * X player. Return the highest value move when a terminal node or the 
+     * maximum search depth is reached.
      * @param board Board to play on and evaluate
      * @param depth The maximum depth of the game tree to search to
-     * @param alpha The best alternative for the maximising player (X)
-     * @param beta The best alternative for the minimising player (O)
      * @param isMax Maximising or minimising player 
      * @return Value of the board 
      */
-    public static int miniMax(Board board, int depth, int alpha, int beta,
-            boolean isMax) {
+    public static int miniMax(Board board, int depth, boolean isMax) {
         int boardVal = evaluateBoard(board, depth);
 
         // Terminal node (win/lose/draw) or max depth reached.
@@ -47,12 +42,8 @@ public class MiniMaxCombined {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'X');
                         highestVal = Math.max(highestVal, miniMax(board,
-                                depth - 1, alpha, beta, false));
+                                depth - 1, false));
                         board.setMarkAt(row, col, ' ');
-                        alpha = Math.max(alpha, highestVal);
-                        if (alpha >= beta) {
-                            return highestVal;
-                        }
                     }
                 }
             }
@@ -65,12 +56,8 @@ public class MiniMaxCombined {
                     if (!board.isTileMarked(row, col)) {
                         board.setMarkAt(row, col, 'O');
                         lowestVal = Math.min(lowestVal, miniMax(board,
-                                depth - 1, alpha, beta, true));
+                                depth - 1, true));
                         board.setMarkAt(row, col, ' ');
-                        beta = Math.min(beta, lowestVal);
-                        if (beta <= alpha) {
-                            return lowestVal;
-                        }
                     }
                 }
             }
@@ -91,8 +78,7 @@ public class MiniMaxCombined {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
                     board.setMarkAt(row, col, 'X');
-                    int moveValue = miniMax(board, MAX_DEPTH, Integer.MIN_VALUE,
-                            Integer.MAX_VALUE, false);
+                    int moveValue = miniMax(board, MAX_DEPTH, false);
                     board.setMarkAt(row, col, ' ');
                     if (moveValue > bestValue) {
                         bestMove[0] = row;
@@ -174,4 +160,5 @@ public class MiniMaxCombined {
 
         return 0;
     }
+
 }

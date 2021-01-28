@@ -1,18 +1,16 @@
-package AI;
+package ai;
 
-import Game.Board;
+import game.Board;
 
 /**
- * The MiniMax algorithm adapted to take into account how many moves it would
- * take to realise winning/losing/drawing board configurations to minimise the 
- * time taken to win or elongate the time taken to lose.
+ * The MiniMax algorithm in its most basic form.
  * @author DavidHurst
  */
-public class MiniMaxImproved {
+public class MiniMax {
 
     private static final int MAX_DEPTH = 6;
 
-    private MiniMaxImproved() {
+    private MiniMax() {
     }
 
     /**
@@ -26,10 +24,10 @@ public class MiniMaxImproved {
      * @return Value of the board 
      */
     public static int miniMax(Board board, int depth, boolean isMax) {
-        int boardVal = evaluateBoard(board, depth);
+        int boardVal = evaluateBoard(board);
 
         // Terminal node (win/lose/draw) or max depth reached.
-        if (Math.abs(boardVal) > 0 || depth == 0 
+        if (Math.abs(boardVal) == 10 || depth == 0 
                 || !board.anyMovesAvailable()) {
             return boardVal;
         }
@@ -94,14 +92,11 @@ public class MiniMaxImproved {
     /**
      * Evaluate the given board from the perspective of the X player, return 
      * 10 if a winning board configuration is found, -10 for a losing one and 0 
-     * for a draw, weight the value of a win/loss/draw according to how many 
-     * moves it would take to realise it using the depth of the game tree the
-     * board configuration is at.
+     * for a draw.
      * @param board Board to evaluate
-     * @param depth depth of the game tree the board configuration is at
      * @return value of the board
      */
-    private static int evaluateBoard(Board board, int depth) {
+    private static int evaluateBoard(Board board) {
         int rowSum = 0;
         int bWidth = board.getWidth();
         int Xwin = 'X' * bWidth;
@@ -113,9 +108,9 @@ public class MiniMaxImproved {
                 rowSum += board.getMarkAt(row, col);
             }
             if (rowSum == Xwin) {
-                return 10 + depth;
+                return 10;
             } else if (rowSum == Owin) {
-                return -10 - depth;
+                return -10;
             }
             rowSum = 0;
         }
@@ -127,9 +122,9 @@ public class MiniMaxImproved {
                 rowSum += board.getMarkAt(row, col);
             }
             if (rowSum == Xwin) {
-                return 10 + depth;
+                return 10;
             } else if (rowSum == Owin) {
-                return -10 - depth;
+                return -10;
             }
             rowSum = 0;
         }
@@ -141,9 +136,9 @@ public class MiniMaxImproved {
             rowSum += board.getMarkAt(i, i);
         }
         if (rowSum == Xwin) {
-            return 10 + depth;
+            return 10;
         } else if (rowSum == Owin) {
-            return -10 - depth;
+            return -10;
         }
 
         // Top-right to bottom-left diagonal.
@@ -153,9 +148,9 @@ public class MiniMaxImproved {
             rowSum += board.getMarkAt(i, indexMax - i);
         }
         if (rowSum == Xwin) {
-            return 10 + depth;
+            return 10;
         } else if (rowSum == Owin) {
-            return -10 - depth;
+            return -10;
         }
 
         return 0;

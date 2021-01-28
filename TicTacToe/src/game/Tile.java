@@ -1,5 +1,5 @@
 
-package Game;
+package game;
 
 /**
  * @author DavidHurst
