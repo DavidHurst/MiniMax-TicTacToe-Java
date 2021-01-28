@@ -2,8 +2,11 @@ package ai;
 
 import game.Board;
 
+import static game.Mark.*;
+
 /**
  * The MiniMax algorithm optimised with Alpha-Beta pruning.
+ *
  * @author DavidHurst
  */
 public class MiniMaxAlphaBeta {
@@ -44,10 +47,10 @@ public class MiniMaxAlphaBeta {
             for (int row = 0; row < board.getWidth(); row++) {
                 for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
-                        board.setMarkAt(row, col, 'X');
+                        board.setMarkAt(row, col, X);
                         highestVal = Math.max(highestVal, miniMax(board,
                                 depth - 1, alpha, beta, false));
-                        board.setMarkAt(row, col, ' ');
+                        board.setMarkAt(row, col, BLANK);
                         alpha = Math.max(alpha, highestVal);
                         if (alpha >= beta) {
                             return highestVal;
@@ -62,10 +65,10 @@ public class MiniMaxAlphaBeta {
             for (int row = 0; row < board.getWidth(); row++) {
                 for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
-                        board.setMarkAt(row, col, 'O');
+                        board.setMarkAt(row, col, O);
                         lowestVal = Math.min(lowestVal, miniMax(board,
                                 depth - 1, alpha, beta, true));
-                        board.setMarkAt(row, col, ' ');
+                        board.setMarkAt(row, col, BLANK);
                         beta = Math.min(beta, lowestVal);
                         if (beta <= alpha) {
                             return lowestVal;
@@ -89,10 +92,10 @@ public class MiniMaxAlphaBeta {
         for (int row = 0; row < board.getWidth(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
-                    board.setMarkAt(row, col, 'X');
+                    board.setMarkAt(row, col, X);
                     int moveValue = miniMax(board, MAX_DEPTH, Integer.MIN_VALUE,
                             Integer.MAX_VALUE, false);
-                    board.setMarkAt(row, col, ' ');
+                    board.setMarkAt(row, col, BLANK);
                     if (moveValue > bestValue) {
                         bestMove[0] = row;
                         bestMove[1] = col;
@@ -114,13 +117,13 @@ public class MiniMaxAlphaBeta {
     private static int evaluateBoard(Board board) {
         int rowSum = 0;
         int bWidth = board.getWidth();
-        int Xwin = 'X' * bWidth;
-        int Owin = 'O' * bWidth;
+        int Xwin = X.getMark() * bWidth;
+        int Owin = O.getMark() * bWidth;
 
         // Check rows for winner.
         for (int row = 0; row < bWidth; row++) {
             for (int col = 0; col < bWidth; col++) {
-                rowSum += board.getMarkAt(row, col);
+                rowSum += board.getMarkAt(row, col).getMark();
             }
             if (rowSum == Xwin) {
                 return 10;
@@ -134,7 +137,7 @@ public class MiniMaxAlphaBeta {
         rowSum = 0;
         for (int col = 0; col < bWidth; col++) {
             for (int row = 0; row < bWidth; row++) {
-                rowSum += board.getMarkAt(row, col);
+                rowSum += board.getMarkAt(row, col).getMark();
             }
             if (rowSum == Xwin) {
                 return 10;
@@ -148,7 +151,7 @@ public class MiniMaxAlphaBeta {
         // Top-left to bottom-right diagonal.
         rowSum = 0;
         for (int i = 0; i < bWidth; i++) {
-            rowSum += board.getMarkAt(i, i);
+            rowSum += board.getMarkAt(i, i).getMark();
         }
         if (rowSum == Xwin) {
             return 10;
@@ -160,7 +163,7 @@ public class MiniMaxAlphaBeta {
         rowSum = 0;
         int indexMax = bWidth - 1;
         for (int i = 0; i <= indexMax; i++) {
-            rowSum += board.getMarkAt(i, indexMax - i);
+            rowSum += board.getMarkAt(i, indexMax - i).getMark();
         }
         if (rowSum == Xwin) {
             return 10;

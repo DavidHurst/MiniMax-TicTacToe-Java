@@ -34,9 +34,9 @@ public class TicTacToe extends Application {
 
         private final int row;
         private final int col;
-        private char mark;
+        private Mark mark;
 
-        public Tile(int initRow, int initCol, char initMark) {
+        public Tile(int initRow, int initCol, Mark initMark) {
             row = initRow;
             col = initCol;
             mark = initMark;
@@ -168,13 +168,13 @@ public class TicTacToe extends Application {
      */
     private void endGame() {
         gameTimer.stop();
-        Alert gameOverAlert = new Alert(AlertType.INFORMATION, "", 
-                        new ButtonType("New Game"));
-        char winner = board.getWinningMark();
+        Alert gameOverAlert = new Alert(AlertType.INFORMATION, "",
+                new ButtonType("New Game"));
+        Mark winner = board.getWinningMark();
 
         gameOverAlert.setTitle("Game Over");
         gameOverAlert.setHeaderText(null);
-        if (winner == ' ') {
+        if (winner == Mark.BLANK) {
             gameOverAlert.setContentText("Draw!");
         } else {
             gameOverAlert.setContentText(winner + " wins!");

@@ -2,10 +2,13 @@ package ai;
 
 import game.Board;
 
+import static game.Mark.*;
+
 /**
  * The MiniMax algorithm adapted to take into account how many moves it would
- * take to realise winning/losing/drawing board configurations to minimise the 
+ * take to realise winning/losing/drawing board configurations to minimise the
  * time taken to win or elongate the time taken to lose.
+ *
  * @author DavidHurst
  */
 public class MiniMaxImproved {
@@ -40,10 +43,10 @@ public class MiniMaxImproved {
             for (int row = 0; row < board.getWidth(); row++) {
                 for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
-                        board.setMarkAt(row, col, 'X');
+                        board.setMarkAt(row, col, X);
                         highestVal = Math.max(highestVal, miniMax(board,
                                 depth - 1, false));
-                        board.setMarkAt(row, col, ' ');
+                        board.setMarkAt(row, col, BLANK);
                     }
                 }
             }
@@ -54,10 +57,10 @@ public class MiniMaxImproved {
             for (int row = 0; row < board.getWidth(); row++) {
                 for (int col = 0; col < board.getWidth(); col++) {
                     if (!board.isTileMarked(row, col)) {
-                        board.setMarkAt(row, col, 'O');
+                        board.setMarkAt(row, col, O);
                         lowestVal = Math.min(lowestVal, miniMax(board,
                                 depth - 1, true));
-                        board.setMarkAt(row, col, ' ');
+                        board.setMarkAt(row, col, BLANK);
                     }
                 }
             }
@@ -77,9 +80,9 @@ public class MiniMaxImproved {
         for (int row = 0; row < board.getWidth(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 if (!board.isTileMarked(row, col)) {
-                    board.setMarkAt(row, col, 'X');
+                    board.setMarkAt(row, col, X);
                     int moveValue = miniMax(board, MAX_DEPTH, false);
-                    board.setMarkAt(row, col, ' ');
+                    board.setMarkAt(row, col, BLANK);
                     if (moveValue > bestValue) {
                         bestMove[0] = row;
                         bestMove[1] = col;
@@ -104,13 +107,13 @@ public class MiniMaxImproved {
     private static int evaluateBoard(Board board, int depth) {
         int rowSum = 0;
         int bWidth = board.getWidth();
-        int Xwin = 'X' * bWidth;
-        int Owin = 'O' * bWidth;
+        int Xwin = X.getMark() * bWidth;
+        int Owin = O.getMark() * bWidth;
 
         // Check rows for winner.
         for (int row = 0; row < bWidth; row++) {
             for (int col = 0; col < bWidth; col++) {
-                rowSum += board.getMarkAt(row, col);
+                rowSum += board.getMarkAt(row, col).getMark();
             }
             if (rowSum == Xwin) {
                 return 10 + depth;
@@ -124,7 +127,7 @@ public class MiniMaxImproved {
         rowSum = 0;
         for (int col = 0; col < bWidth; col++) {
             for (int row = 0; row < bWidth; row++) {
-                rowSum += board.getMarkAt(row, col);
+                rowSum += board.getMarkAt(row, col).getMark();
             }
             if (rowSum == Xwin) {
                 return 10 + depth;
@@ -138,7 +141,7 @@ public class MiniMaxImproved {
         // Top-left to bottom-right diagonal.
         rowSum = 0;
         for (int i = 0; i < bWidth; i++) {
-            rowSum += board.getMarkAt(i, i);
+            rowSum += board.getMarkAt(i, i).getMark();
         }
         if (rowSum == Xwin) {
             return 10 + depth;
@@ -150,7 +153,7 @@ public class MiniMaxImproved {
         rowSum = 0;
         int indexMax = bWidth - 1;
         for (int i = 0; i <= indexMax; i++) {
-            rowSum += board.getMarkAt(i, indexMax - i);
+            rowSum += board.getMarkAt(i, indexMax - i).getMark();
         }
         if (rowSum == Xwin) {
             return 10 + depth;
