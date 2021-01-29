@@ -1,18 +1,13 @@
-package Game;
+package game;
 
-import AI.MiniMaxCombined;
+import ai.MiniMaxCombined;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
@@ -39,9 +34,9 @@ public class TicTacToe extends Application {
 
         private final int row;
         private final int col;
-        private char mark;
+        private Mark mark;
 
-        public Tile(int initRow, int initCol, char initMark) {
+        public Tile(int initRow, int initCol, Mark initMark) {
             row = initRow;
             col = initCol;
             mark = initMark;
@@ -113,7 +108,7 @@ public class TicTacToe extends Application {
 
     private MenuBar initialiseMenu() {
         menuBar = new MenuBar();
-        gameMenu = new Menu("Game");
+        gameMenu = new Menu("game");
         newGameOption = new MenuItem("New Game");
 
         gameMenu.getItems().add(newGameOption);
@@ -173,13 +168,13 @@ public class TicTacToe extends Application {
      */
     private void endGame() {
         gameTimer.stop();
-        Alert gameOverAlert = new Alert(AlertType.INFORMATION, "", 
-                        new ButtonType("New Game"));
-        char winner = board.getWinningMark();
+        Alert gameOverAlert = new Alert(AlertType.INFORMATION, "",
+                new ButtonType("New Game"));
+        Mark winner = board.getWinningMark();
 
         gameOverAlert.setTitle("Game Over");
         gameOverAlert.setHeaderText(null);
-        if (winner == ' ') {
+        if (winner == Mark.BLANK) {
             gameOverAlert.setContentText("Draw!");
         } else {
             gameOverAlert.setContentText(winner + " wins!");
